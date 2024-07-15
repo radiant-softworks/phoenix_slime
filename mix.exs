@@ -1,7 +1,7 @@
 defmodule PhoenixSlime.Mixfile do
   use Mix.Project
 
-  @version "0.13.1"
+  @version "0.13.0"
 
   def project do
     [
@@ -11,20 +11,26 @@ defmodule PhoenixSlime.Mixfile do
       elixir: "~> 1.10",
       package: package(),
       dialyzer: [plt_add_apps: [:mix]],
-      version: @version
+      version: @version,
+      elixirc_paths: elixirc_paths(Mix.env())
     ]
   end
 
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
+
   def application do
-    [applications: [:phoenix, :slime]]
+    # [applications: [:phoenix, :slime]]
+    [applications: [:phoenix, :phoenix_html, :phoenix_live_view, :slime]]
   end
 
   def deps do
     [
-      {:phoenix, "~> 1.4"},
-      {:phoenix_html, "~> 2.13 or ~> 3.0"},
+      {:phoenix, "~> 1.7"},
+      {:phoenix_html, "~> 4.0"},
       {:jason, "~> 1.0", optional: true},
       {:slime, "~> 1.0"},
+      # {:slime, path: "../slime"},
       {:ex_doc, ">= 0.0.0", only: :dev},
       {:earmark, ">= 0.0.0", only: :dev},
       {:credo, ">= 0.0.0", only: [:dev, :test]},

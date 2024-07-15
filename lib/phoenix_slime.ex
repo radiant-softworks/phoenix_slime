@@ -2,6 +2,7 @@ defmodule PhoenixSlime do
   @moduledoc """
   Bring the power of Slime to your Phoenix applications
   """
+alias ElixirLS.LanguageServer.Plugins.Phoenix
 
   @doc """
   Provides the `~l` sigil with HTML safe Slime syntax inside source files.
@@ -44,4 +45,27 @@ defmodule PhoenixSlime do
             ~S( Remove the #{}, use = to insert values, or ) <>
             ~S(use ~L to template with #{}.)
   end
+
+  defmacro sigil_h({:<<>>, meta, [expr]}, []) do
+    unless Macro.Env.has_var?(__CALLER__, {:assigns, nil}) do
+      raise "~h requires a variable named \"assigns\" to exist and be set to a map"
+    end
+
+    expr =
+      expr
+      |> Slime.Renderer.precompile_heex()
+
+    options = [
+      engine: Phoenix.LiveView.TagEngine,
+      file: __CALLER__.file,
+      line: __CALLER__.line + 1,
+      caller: __CALLER__,
+      indentation: meta[:indentation],
+      source: expr,
+      tag_handler: Phoenix.LiveView.HTMLEngine
+    ]
+
+    EEx.compile_string(expr, options)
+  end
+
 end

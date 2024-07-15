@@ -11,6 +11,10 @@
 [license-img]: http://img.shields.io/badge/license-MIT-brightgreen.svg
 [license]: http://opensource.org/licenses/MIT
 
+> ### Note:
+> This is basically copied from [https://github.com/skotchpine/phoenix_slime](https://github.com/skotchpine/phoenix_slime)
+
+
 ## Usage
 
   1. Add `{:phoenix_slime, "~> 0.13.1"}` to your deps in `mix.exs`.
@@ -61,6 +65,31 @@ Generated files have `.slime` extension by default. If you prefer `.slim`, you c
 ```elixir
 config :phoenix_slime, :use_slim_extension, true
 ```
+
+## Support for Phoenix 1.7
+
+A new sigil `~h` is implemented in order to not override `~H` Phoenix 1.7 sigil.
+
+Implementation example:
+
+```slim
+import PhoenixSlime
+def slim_button(assigns) do
+  ~h"""
+    :greet user=@current_user.name
+      ::subtitle
+        | Hello there!
+  """
+end
+def button(assigns) do
+  ~H"""
+    <.greet user={@current_user.name}>
+      <:subtitle>Hello there!</:subtitle>
+    </:greet>
+  """
+end
+```
+
 
 ## License
 
