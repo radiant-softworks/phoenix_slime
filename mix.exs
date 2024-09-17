@@ -27,7 +27,7 @@ defmodule PhoenixSlime.Mixfile do
   def deps do
     [
       {:phoenix, "~> 1.7"},
-      {:phoenix_html, "~> 4.0"},
+      {:phoenix_html, "~> 4.1"},
       {:jason, "~> 1.0", optional: true},
       {:slime, "~> 1.0"},
       # {:slime, path: "../slime"},
